@@ -1,13 +1,5 @@
+import { Pet } from "@/lib/types";
 import Image from "next/image";
-
-type Pet = {
-  age: number;
-  id: number;
-  imageUrl: string;
-  name: string;
-  notes: string;
-  ownerName: string;
-};
 
 type PetListProps = {
   pets: Pet[];
