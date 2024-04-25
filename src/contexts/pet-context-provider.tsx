@@ -29,6 +29,9 @@ export function PetContextProvider({ petData, children }: PetContextProviderProp
   const numberOfPets = pets.length;
 
   // event handlers / actions
+  function handleAddPet(newPet: Pet) {
+    setPets(prev => [...prev, newPet]);
+  }
   function handleCheckoutPet(id: string) {
     setPets(prev => prev.filter(pet => pet.id !== id));
     setSelectedPetId(null);

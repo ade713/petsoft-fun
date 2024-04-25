@@ -43,7 +43,7 @@ export function PetButton({
           <DialogTitle>{actionType === "add" ? "Add a new pet" : "Edit pet"}</DialogTitle>
         </DialogHeader>
 
-        <PetForm />
+        <PetForm actionType={actionType} />
       </DialogContent>
     </Dialog>
   );
