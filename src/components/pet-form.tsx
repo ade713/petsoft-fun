@@ -6,6 +6,8 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 
+const DEFAULT_PET_IMAGE_URL = "https://images.unsplash.com/photo-1545218553-cdb549f13f8a?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
 type PetFormProps = {
   actionType: "add" | "edit";
   onFormSubmitted: () => void;
@@ -22,9 +24,7 @@ export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
       // cast input data as strings since typescript is not detecting `required` tag on input element
       name: petFormData.get("name") as string,
       ownerName: petFormData.get("ownerName") as string,
-      imageUrl:
-        petFormData.get("imageUrl") as string ||
-        "https://images.unsplash.com/photo-1545218553-cdb549f13f8a?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imageUrl: petFormData.get("imageUrl") as string || DEFAULT_PET_IMAGE_URL,
       age: +(petFormData.get("age") as string),
       notes: petFormData.get("notes") as string,
     };
