@@ -9,3 +9,14 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Pet {
+  id String @id @default(cuid())
+  age Int
+  createdAt DateTime @default(now())
+  imageUrl String
+  name String
+  notes String
+  ownerName String
+  updateAt DateTime @updatedAt
+}
