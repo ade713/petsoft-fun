@@ -6,6 +6,7 @@ import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { PetFormBtn } from "./pet-form-btn";
 import { DEFAULT_PET_IMAGE_URL } from "@/lib/constants";
+import { PetEssentials } from "@/lib/types";
 
 type PetFormProps = {
   actionType: "add" | "edit";
@@ -18,7 +19,7 @@ export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
   async function handlePetFormAction(formData: FormData) {
     onFormSubmitted();
 
-    const petData = {
+    const petData: PetEssentials = {
       age: parseInt(formData.get("age") as string),
       imageUrl: (formData.get("imageUrl") as string) || DEFAULT_PET_IMAGE_URL,
       name: formData.get("name") as string,
@@ -44,7 +45,7 @@ export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
             type="text"
             defaultValue={actionType === "edit" ? selectedPet?.name : ""}
             required
-            />
+          />
         </div>
 
         <div className="space-y-1">

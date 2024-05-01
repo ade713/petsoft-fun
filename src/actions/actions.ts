@@ -1,10 +1,11 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { Pet } from "@/lib/types";
+import { PetEssentials } from "@/lib/types";
+import { Pet } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export async function addPet(petData: Omit<Pet, 'id'>) {
+export async function addPet(petData: PetEssentials) {
   try {
     await prisma.pet.create({
       data: petData,
@@ -12,13 +13,13 @@ export async function addPet(petData: Omit<Pet, 'id'>) {
   } catch (error) {
     return {
       message: "Could not add pet...",
-    }
+    };
   }
 
-  revalidatePath('/app', 'layout');
+  revalidatePath("/app", "layout");
 }
 
-export async function editPet(petId: string, newPetData: Omit<Pet, 'id'>) {
+export async function editPet(petId: Pet["id"], newPetData: PetEssentials) {
   try {
     await prisma.pet.update({
       where: {
@@ -29,13 +30,13 @@ export async function editPet(petId: string, newPetData: Omit<Pet, 'id'>) {
   } catch (error) {
     return {
       message: "Could not edit pet...",
-    }
+    };
   }
 
-  revalidatePath('/app', 'layout');
+  revalidatePath("/app", "layout");
 }
 
-export async function deletePet(petId: string) {
+export async function deletePet(petId: Pet["id"]) {
   try {
     await prisma.pet.delete({
       where: {
@@ -48,5 +49,5 @@ export async function deletePet(petId: string) {
     };
   }
 
-  revalidatePath('/app', 'layout');
+  revalidatePath("/app", "layout");
 }
