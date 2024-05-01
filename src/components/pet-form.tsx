@@ -13,33 +13,28 @@ type PetFormProps = {
 };
 
 export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
-  const {
-    handleAddPet,
-    handleEditPet,
-    selectedPet,
-  } = usePetContext();
+  const { handleAddPet, handleEditPet, selectedPet } = usePetContext();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handlePetFormAction(formData) {
+    onFormSubmitted();
 
-    const petFormData = new FormData(e.currentTarget);
-    const pet = {
-      // cast input data as strings since typescript is not detecting `required` tag on input element
-      name: petFormData.get("name") as string,
-      ownerName: petFormData.get("ownerName") as string,
-      imageUrl: petFormData.get("imageUrl") as string || DEFAULT_PET_IMAGE_URL,
-      age: +(petFormData.get("age") as string),
-      notes: petFormData.get("notes") as string,
+    const petData = {
+      age: parseInt(formData.get("age")),
+      imageUrl: formData.get("imageUrl") as string || DEFAULT_PET_IMAGE_URL,
+      name: formData.get("name") as string,
+      notes: formData.get("notes") as string,
+      ownerName: formData.get("ownerName") as string,
     };
 
-    if (actionType === "add") handleAddPet(pet);
-    if (actionType === "edit") handleEditPet(selectedPet!.id, pet);
-
-    onFormSubmitted();
+    if (actionType === "add") {
+      await handleAddPet(petData);
+    } else if (actionType === "edit") {
+      await handleEditPet(selectedPet!.id, petData);
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col">
+    <form action={handlePetFormAction} className="flex flex-col">
       <div className="space-y-3">
         <div className="space-y-1">
           <Label htmlFor="name">Name</Label>
