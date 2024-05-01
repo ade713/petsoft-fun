@@ -8,35 +8,19 @@ import { PetFormBtn } from "./pet-form-btn";
 import { DEFAULT_PET_IMAGE_URL } from "@/lib/constants";
 import { PetEssentials } from "@/lib/types";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TPetForm, petFormSchema } from "@/lib/validations";
 
 type PetFormProps = {
   actionType: "add" | "edit";
   onFormSubmitted: () => void;
 };
 
-const petFormSchema = z.object({
-  name: z.string().trim().min(1, { message: "Name is required" }).max(180),
-  ownerName: z
-    .string()
-    .trim()
-    .min(1, { message: "Owner name is required" })
-    .max(180),
-  imageUrl: z.union([
-    z.literal(""),
-    z.string().trim().min(1, { message: "Image url must be a valid url" }),
-  ]),
-  age: z.coerce.number().int().positive().max(999),
-  notes: z.union([z.literal(""), z.string().trim().max(1000)]),
-});
-
-type TPetForm = z.infer<typeof petFormSchema>;
-
 export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
   const { handleAddPet, handleEditPet, selectedPet } = usePetContext();
 
   const {
+    getValues,
     register,
     trigger,
     formState: { errors },
@@ -44,19 +28,14 @@ export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
     resolver: zodResolver(petFormSchema),
   });
 
-  async function handlePetFormAction(formData: FormData) {
+  async function handlePetFormAction() {
     const result = await trigger();
     if (!result) return;
 
     onFormSubmitted();
 
-    const petData: PetEssentials = {
-      age: parseInt(formData.get("age") as string),
-      imageUrl: (formData.get("imageUrl") as string) || DEFAULT_PET_IMAGE_URL,
-      name: formData.get("name") as string,
-      notes: formData.get("notes") as string,
-      ownerName: formData.get("ownerName") as string,
-    };
+    const petData = getValues();
+    petData.imageUrl = petData.imageUrl || DEFAULT_PET_IMAGE_URL;
 
     if (actionType === "add") {
       await handleAddPet(petData);
