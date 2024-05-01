@@ -15,12 +15,12 @@ type PetFormProps = {
 export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
   const { handleAddPet, handleEditPet, selectedPet } = usePetContext();
 
-  async function handlePetFormAction(formData) {
+  async function handlePetFormAction(formData: FormData) {
     onFormSubmitted();
 
     const petData = {
-      age: parseInt(formData.get("age")),
-      imageUrl: formData.get("imageUrl") as string || DEFAULT_PET_IMAGE_URL,
+      age: parseInt(formData.get("age") as string),
+      imageUrl: (formData.get("imageUrl") as string) || DEFAULT_PET_IMAGE_URL,
       name: formData.get("name") as string,
       notes: formData.get("notes") as string,
       ownerName: formData.get("ownerName") as string,
