@@ -11,12 +11,12 @@ datasource db {
 }
 
 model Pet {
-  id String @id @default(cuid())
-  age Int
+  id        String   @id @default(cuid())
+  age       Int
   createdAt DateTime @default(now())
-  imageUrl String
-  name String
-  notes String
+  imageUrl  String
+  name      String
+  notes     String
   ownerName String
-  updateAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 }
