@@ -23,7 +23,7 @@ const petFormSchema = z.object({
     .trim()
     .min(1, { message: "Owner name is required" })
     .max(180),
-  iamgeUrl: z.union([
+  imageUrl: z.union([
     z.literal(""),
     z.string().trim().min(1, { message: "Image url must be a valid url" }),
   ]),
