@@ -6,7 +6,6 @@ import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { PetFormBtn } from "./pet-form-btn";
 import { DEFAULT_PET_IMAGE_URL } from "@/lib/constants";
-import { PetEssentials } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TPetForm, petFormSchema } from "@/lib/validations";
@@ -26,6 +25,13 @@ export function PetForm({ actionType, onFormSubmitted }: PetFormProps) {
     formState: { errors },
   } = useForm<TPetForm>({
     resolver: zodResolver(petFormSchema),
+    defaultValues: {
+      name: selectedPet?.name,
+      ownerName: selectedPet?.ownerName,
+      imageUrl: selectedPet?.imageUrl,
+      age: selectedPet?.age,
+      notes: selectedPet?.notes,
+    },
   });
 
   async function handlePetFormAction() {
