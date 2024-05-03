@@ -20,9 +20,7 @@ export default async function Layout({ children }: LayoutProps) {
       <div className="flex flex-col max-w-[1050px] min-h-screen mx-auto px-4">
         <AppHeader />
         <SearchContextProvider>
-          <PetContextProvider petData={petData}>
-            {children}
-          </PetContextProvider>
+          <PetContextProvider petData={petData}>{children}</PetContextProvider>
         </SearchContextProvider>
         <AppFooter />
       </div>
