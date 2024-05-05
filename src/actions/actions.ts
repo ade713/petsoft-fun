@@ -1,8 +1,19 @@
 "use server";
 
+import { signIn } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { petFormSchema, petIdSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
+
+// ----- USER ACTIONS -----
+
+export async function logIn(formData: FormData) {
+  const authData = Object.fromEntries(formData.entries());
+
+  await signIn("credentials", authData);
+}
+
+// ----- PET ACTIONS -----
 
 export async function addPet(petData: unknown) {
   const validatedPetData = petFormSchema.safeParse(petData);
