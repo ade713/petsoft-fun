@@ -46,7 +46,13 @@ const config = {
 
       if (isLoggedIn && isTryingToAccessApp) return true;
 
-      if (!isTryingToAccessApp) return true;
+      if (isLoggedIn && !isTryingToAccessApp) {
+        return Response.redirect(new URL("app/dashboard", request.nextUrl));
+      }
+
+      if (!isLoggedIn && !isTryingToAccessApp) return true;
+
+      return false;
     },
   },
 } satisfies NextAuthConfig;
