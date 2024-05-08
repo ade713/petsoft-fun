@@ -1,11 +1,12 @@
 "use server";
 
-import { auth, signIn, signOut } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { petFormSchema, petIdSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
+import { checkAuth } from "@/lib/server-utils";
 
 // ----- USER ACTIONS -----
 
@@ -38,8 +39,7 @@ export async function signUp(formData: FormData) {
 // ----- PET ACTIONS -----
 
 export async function addPet(petData: unknown) {
-  const session = await auth();
-  if (!session?.user) redirect("/login");
+  const session = await checkAuth();
 
   const validatedPetData = petFormSchema.safeParse(petData);
   if (!validatedPetData.success) {
@@ -70,8 +70,7 @@ export async function addPet(petData: unknown) {
 
 export async function editPet(petId: unknown, newPetData: unknown) {
   // authentication check
-  const session = await auth();
-  if (!session?.user) redirect("/login");
+  const session = await checkAuth();
 
   // validation
   const validatedPetId = petIdSchema.safeParse(petId);
@@ -111,8 +110,7 @@ export async function editPet(petId: unknown, newPetData: unknown) {
 
 export async function deletePet(petId: unknown) {
   // authentication check
-  const session = await auth();
-  if (!session?.user) redirect("/login");
+  const session = await checkAuth();
 
   // validation
   const validatedPetId = petIdSchema.safeParse(petId);
