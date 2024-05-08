@@ -6,7 +6,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { logIn } from "@/actions/actions";
+import { logIn, signUp } from "@/actions/actions";
 
 type AuthFormProps = {
   type: "login" | "signup";
@@ -14,7 +14,7 @@ type AuthFormProps = {
 
 export function AuthForm({ type }: AuthFormProps) {
   return (
-    <form action={logIn}>
+    <form action={type === "login" ? logIn : signUp}>
       <div className="space-y-1">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" />
