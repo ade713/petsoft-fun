@@ -8,13 +8,29 @@ import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { checkAuth, getPetById } from "@/lib/server-utils";
 import { Prisma } from "@prisma/client";
+import { AuthError } from "next-auth";
 
 // ----- USER ACTIONS -----
 
-export async function logIn(formData: unknown) {
+export async function logIn(prevState: unknown, formData: unknown) {
   if (!(formData instanceof FormData)) return { message: "Invalid form data." };
 
-  await signIn("credentials", formData);
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin": {
+          return { message: "Invalid credentials." };
+        }
+        default: {
+          return { message: "Could not sign in." };
+        }
+      }
+    }
+
+    return { message: "Could not sign in." };
+  }
 
   redirect("/app/dashboard");
 }
@@ -23,7 +39,7 @@ export async function logOut() {
   await signOut({ redirectTo: "/" });
 }
 
-export async function signUp(formData: unknown) {
+export async function signUp(prevState: unknown, formData: unknown) {
   // validation
   if (!(formData instanceof FormData)) return { message: "Invalid form data." };
 
