@@ -2,7 +2,7 @@
 
 import { signIn, signOut } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { petFormSchema, petIdSchema } from "@/lib/validations";
+import { authSchema, petFormSchema, petIdSchema } from "@/lib/validations";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
@@ -22,15 +22,21 @@ export async function logOut() {
   await signOut({ redirectTo: "/" });
 }
 
-export async function signUp(formData: FormData) {
-  const hashedPassword = await bcrypt.hash(
-    formData.get("password") as string,
-    10
-  );
+export async function signUp(formData: unknown) {
+  // validation
+  if (!(formData instanceof FormData)) return { message: "Invalid form data." };
+
+  // convert formData to a plain object
+  const formDataEntries = Object.fromEntries(formData.entries());
+  const validatedFormData = authSchema.safeParse(formDataEntries);
+  if (!validatedFormData.success) return { message: "Invalid form data." };
+
+  const { email, password } = validatedFormData.data;
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   await prisma?.user.create({
     data: {
-      email: formData.get("email") as string,
+      email,
       hashedPassword,
     },
   });
