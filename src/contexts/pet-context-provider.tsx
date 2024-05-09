@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 type PetContextProviderProps = {
   children: React.ReactNode;
-  petData: Pet[];
+  petsData: Pet[];
 };
 
 type TPetContext = {
@@ -25,12 +25,12 @@ type TPetContext = {
 export const PetContext = createContext<TPetContext | null>(null);
 
 export function PetContextProvider({
-  petData,
+  petsData,
   children,
 }: PetContextProviderProps) {
   // state
   const [optimisticPets, setOptimisticPets] = useOptimistic(
-    petData,
+    petsData,
     (state, { action, payload }) => {
       switch (action) {
         case "add":

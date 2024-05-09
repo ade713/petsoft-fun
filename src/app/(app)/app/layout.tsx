@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { PetContextProvider } from "@/contexts/pet-context-provider";
 import { SearchContextProvider } from "@/contexts/search-context-provider";
 import prisma from "@/lib/db";
-import { checkAuth } from "@/lib/server-utils";
+import { checkAuth, getPetsByUserId } from "@/lib/server-utils";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -14,11 +14,7 @@ type LayoutProps = {
 export default async function Layout({ children }: LayoutProps) {
   const session = await checkAuth();
 
-  const petData = await prisma.pet.findMany({
-    where: {
-      userId: session.user.id,
-    },
-  });
+  const petsData = await getPetsByUserId(session.user.id);
 
   return (
     <>
@@ -27,7 +23,9 @@ export default async function Layout({ children }: LayoutProps) {
       <div className="flex flex-col max-w-[1050px] min-h-screen mx-auto px-4">
         <AppHeader />
         <SearchContextProvider>
-          <PetContextProvider petData={petData}>{children}</PetContextProvider>
+          <PetContextProvider petsData={petsData}>
+            {children}
+          </PetContextProvider>
         </SearchContextProvider>
         <AppFooter />
       </div>
