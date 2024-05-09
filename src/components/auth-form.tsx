@@ -1,12 +1,7 @@
-import {
-  AUTH_FORM_LOGIN_TYPE,
-  LOGIN_BUTTON_TEXT,
-  SIGN_UP_BUTTON_TEXT,
-} from "@/lib/constants";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { logIn, signUp } from "@/actions/actions";
+import { AuthFormBtn } from "./auth-form-btn";
 
 type AuthFormProps = {
   type: "login" | "signup";
@@ -25,11 +20,7 @@ export function AuthForm({ type }: AuthFormProps) {
         <Input id="password" name="password" type="password" />
       </div>
 
-      <Button>
-        {type === AUTH_FORM_LOGIN_TYPE
-          ? LOGIN_BUTTON_TEXT
-          : SIGN_UP_BUTTON_TEXT}
-      </Button>
+      <AuthFormBtn type={type} />
     </form>
   );
 }
