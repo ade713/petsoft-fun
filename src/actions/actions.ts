@@ -24,15 +24,13 @@ export async function logIn(prevState: unknown, formData: unknown) {
           return { message: "Invalid credentials." };
         }
         default: {
-          return { message: "Could not sign in." };
+          return { message: "Error, could not sign in." };
         }
       }
     }
 
-    return { message: "Could not sign in." };
+    throw error; // next.js redirect throws error, need to throw error again
   }
-
-  redirect("/app/dashboard");
 }
 
 export async function logOut() {
