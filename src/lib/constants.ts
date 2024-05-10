@@ -5,3 +5,4 @@ export const LOGIN_BUTTON_TEXT = "Login";
 export const SIGN_UP_BUTTON_TEXT = "Sign Up";
 export const AUTH_FORM_LOGIN_TYPE = "login";
 export const AUTH_FORM_SIGN_UP_TYPE = "signup";
+export const SIGN_OUT_BUTTON_TEXT = "Sign out";
