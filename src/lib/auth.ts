@@ -47,12 +47,17 @@ const config = {
 
       if (!isLoggedIn && isTryingToAccessApp) return false;
 
+      if (isLoggedIn && isTryingToAccessApp && !auth?.user.hasPaid) {
+        return Response.redirect(new URL("/payment", request.nextUrl));
+      }
+
       if (isLoggedIn && isTryingToAccessApp && auth?.user.hasPaid) return true;
 
       if (isLoggedIn && !isTryingToAccessApp) {
         if (
-          request.nextUrl.pathname.includes("/login") ||
-          request.nextUrl.pathname.includes("/signup")
+          (request.nextUrl.pathname.includes("/login") ||
+            request.nextUrl.pathname.includes("/signup")) &&
+          !auth?.user.hasPaid
         ) {
           return Response.redirect(new URL("/payment", request.nextUrl));
         }
