@@ -47,7 +47,7 @@ const config = {
 
       if (!isLoggedIn && isTryingToAccessApp) return false;
 
-      if (isLoggedIn && isTryingToAccessApp) return true;
+      if (isLoggedIn && isTryingToAccessApp && auth?.user.hasPaid) return true;
 
       if (isLoggedIn && !isTryingToAccessApp) {
         if (
@@ -68,6 +68,7 @@ const config = {
       if (user) {
         // on sign in
         token.userId = user.id;
+        token.hasPaid = user.hasPaid;
       }
 
       return token;
@@ -75,6 +76,7 @@ const config = {
     session: ({ session, token }) => {
       if (session.user) {
         session.user.id = token.userId;
+        session.user.hasPaid = token.hasPaid;
       }
 
       return session;
