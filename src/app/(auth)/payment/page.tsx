@@ -1,3 +1,4 @@
+import { AccessAppBtn } from "@/components/access-app-btn";
 import { H1 } from "@/components/h1";
 import { PaymentBtn } from "@/components/payment-btn";
 
@@ -10,6 +11,8 @@ export default function Page({ searchParams }: PaymentPageParams) {
     <main className="flex flex-col items-center space-y-10">
       <H1>PetSoft access requires payment</H1>
 
+      {searchParams.success && <AccessAppBtn />}
+
       {!searchParams.success && <PaymentBtn />}
 
       {searchParams.success && (
@@ -17,6 +20,7 @@ export default function Page({ searchParams }: PaymentPageParams) {
           Payment successful! You now have lifetime access to PetSoft.
         </p>
       )}
+
       {searchParams.cancelled && (
         <p className="text-sm text-red-700">
           Payment cancelled. You can try again.
