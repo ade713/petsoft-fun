@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 export function AccessAppBtn() {
-  const { update } = useSession();
+  const { data: session, update, status } = useSession();
   const router = useRouter();
 
   async function handleAccessButtonClick() {
@@ -13,5 +13,11 @@ export function AccessAppBtn() {
     router.push("/app/dashboard");
   }
 
-  return <Button onClick={handleAccessButtonClick}>Access PetSoft</Button>;
+  const isDisabled = status === "loading" || session?.user.hasPaid;
+
+  return (
+    <Button disabled={isDisabled} onClick={handleAccessButtonClick}>
+      Access PetSoft
+    </Button>
+  );
 }
