@@ -1,4 +1,5 @@
 import { NextAuthConfig } from "next-auth";
+import { getUserByEmail } from "./server-utils";
 
 export const nextAuthEdgeConfig = {
   pages: {
